@@ -31,6 +31,7 @@ from pyudev import Enumerator
 from ._constants import _ATTRIBUTE_STRATEGY
 from ._constants import _CONTEXT_STRATEGY
 from ._constants import _DEVICE_STRATEGY
+from ._constants import _HEALTH_CHECK_FILTER
 from ._constants import _MATCH_PROPERTY_STRATEGY
 from ._constants import _SUBSYSTEM_STRATEGY
 from ._constants import _SYSNAME_STRATEGY
@@ -39,6 +40,7 @@ from ._constants import _UDEV_TEST
 from ._constants import _UDEV_VERSION
 
 from .utils import failed_health_check_wrapper
+from .utils import unsatisfiable_wrapper
 
 def _is_int(value):
     try:
@@ -169,12 +171,12 @@ class TestEnumerator(object):
         assert all(device[key] == value and device.asint(key) == int(value) \
            for device in devices)
 
-    @failed_health_check_wrapper
+    @unsatisfiable_wrapper
     @given(
        _CONTEXT_STRATEGY,
        _MATCH_PROPERTY_STRATEGY.filter(lambda x: _is_bool(x[1]))
     )
-    @settings(max_examples=10)
+    @settings(max_examples=10, suppress_health_check=_HEALTH_CHECK_FILTER)
     def test_match_property_bool(self, context, pair):
         """
         Verify that a probably boolean property lookup works.

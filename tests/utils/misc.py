@@ -36,6 +36,7 @@ import six
 import pytest
 
 from hypothesis.core import FailedHealthCheck
+from hypothesis.core import Unsatisfiable
 
 
 def is_unicode_string(value):
@@ -61,6 +62,31 @@ def failed_health_check_wrapper(func):
             func_code = six.get_function_code(func)
             pytest.skip(
                'failed health check for %s() (%s: %s)' % \
+               (
+                  func_code.co_name,
+                  func_code.co_filename,
+                  func_code.co_firstlineno
+               )
+            )
+
+    return the_func
+
+def unsatisfiable_wrapper(func):
+    """
+    If the test raises unsatisfiable, call skip.
+    """
+
+    @wraps(func)
+    def the_func(*args):
+        """
+        Catch a hypothesis FailedHealthCheck exception and log it as a skip.
+        """
+        try:
+            func(*args)
+        except Unsatisfiable:
+            func_code = six.get_function_code(func)
+            pytest.skip(
+               'unable to generate examples for %s() (%s: %s)' % \
                (
                   func_code.co_name,
                   func_code.co_filename,

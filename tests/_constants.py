@@ -30,6 +30,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from hypothesis import strategies
+from hypothesis import HealthCheck
 
 import pytest
 
@@ -104,6 +105,8 @@ _TAG_STRATEGY = \
         _TAGS_STRATEGY.filter(lambda t: sum(1 for _ in t) != 0).flatmap(
            strategies.sampled_from
         )
+
+_HEALTH_CHECK_FILTER = [HealthCheck.filter_too_much, HealthCheck.too_slow]
 
 def _UDEV_TEST(version, node=None): # pylint: disable=invalid-name
     fmt_str = "%s: udev version must be at least %s, is %s"
