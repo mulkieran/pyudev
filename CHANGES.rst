@@ -9,6 +9,7 @@ Recommended development release: Fedora 41
   https://github.com/pyudev/pyudev/pull/522
 
 - Tidies and Maintenance:
+  https://github.com/pyudev/pyudev/pull/526
   https://github.com/pyudev/pyudev/pull/524
   https://github.com/pyudev/pyudev/pull/521
   https://github.com/pyudev/pyudev/pull/520
