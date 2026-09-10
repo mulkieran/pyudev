@@ -202,6 +202,19 @@ Version information
 
 .. autoclass:: Attributes()
 
+       .. note::
+
+       **Reading Binary Sysfs Attributes**
+
+       Sysfs attributes often contain raw binary data rather than text.
+       When accessing attributes via this class, the values are returned
+       as :class:`bytes`.
+
+       **Do not** attempt to decode these values as text (e.g., UTF-8)
+       unless you are certain the specific attribute is text-based.
+       Trying to decode binary hardware attributes (like EDID or raw
+       sensor data) will likely raise a ``UnicodeDecodeError``.
+
    .. attribute:: device
 
       The :class:`Device` to which these attributes belong.
