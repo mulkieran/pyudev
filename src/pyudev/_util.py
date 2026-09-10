@@ -141,22 +141,13 @@ def eintr_retry_call(func, *args, **kwargs):
     This function is based on _eintr_retry_call in python's subprocess.py.
     """
 
-    # select.error inherits from Exception instead of OSError in Python 2
-
     import select  # noqa: PLC0415
 
     while True:
         try:
             return func(*args, **kwargs)
         except (OSError, IOError, select.error) as err:
-            # If this is not an IOError or OSError, it's the old select.error
-            # type, which means that the errno is only accessible via subscript
-            if isinstance(err, (OSError, IOError)):
-                error_code = err.errno
-            else:
-                error_code = err.args[0]
-
-            if error_code == errno.EINTR:
+            if err.errno == errno.EINTR:
                 continue
             raise
 
@@ -181,8 +172,7 @@ def udev_version():
     could not be converted to an integer.  Raise
     :exc:`~exceptions.EnvironmentError`, if ``udevadm`` was not found, or could
     not be executed.  Raise :exc:`subprocess.CalledProcessError`, if
-    ``udevadm`` returned a non-zero exit code.  On Python 2.7 or newer, the
-    ``output`` attribute of this exception is correctly set.
+    ``udevadm`` returned a non-zero exit code.
 
     .. versionadded:: 0.8
     """

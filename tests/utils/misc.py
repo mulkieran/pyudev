@@ -31,8 +31,8 @@ from hypothesis.core import FailedHealthCheck
 
 def is_unicode_string(value):
     """
-    Return ``True``, if ``value`` is of a real unicode string type
-    (``unicode`` in python 2, ``str`` in python 3), ``False`` otherwise.
+    Return ``True``, if ``value`` is of a real unicode string type,
+    ``False`` otherwise.
     """
     return isinstance(value, str)
 
