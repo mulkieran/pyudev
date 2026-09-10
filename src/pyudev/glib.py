@@ -103,13 +103,7 @@ class MonitorObserver(GObject.Object, _ObserverMixin):
     """
 
     __gsignals__ = {
-        # explicitly convert the signal to str, because glib expects the
-        # *native* string type of the corresponding python version as type of
-        # signal name, and str() is the name of the native string type of both
-        # python versions.  We could also remove the "unicode_literals" import,
-        # but I don't want to make exceptions to the standard set of future
-        # imports used throughout pyudev for the sake of consistency.
-        str("device-event"): (
+        "device-event": (
             GObject.SIGNAL_RUN_LAST,
             GObject.TYPE_NONE,
             (GObject.TYPE_PYOBJECT,),
